@@ -16,7 +16,7 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    // Créer un rôle (déjà existante)
+    // create role
     public function store(Request $request)
     {
         try {
@@ -34,14 +34,14 @@ class RoleController extends Controller
         }
     }
 
-    // Lire tous les rôles (déjà existante)
+    // get all roles
     public function index()
     {
-        $roles = $this->roleService->getAllRoles(); // Correction pour utiliser le service
+        $roles = $this->roleService->getAllRoles(); 
         return response()->json($roles);
     }
 
-    // Lire un rôle par ID
+    // role by Id
     public function show($id)
     {
         $role = $this->roleService->getRoleById($id);
@@ -53,7 +53,7 @@ class RoleController extends Controller
         return response()->json($role);
     }
 
-    // Mettre à jour un rôle
+    // update role
     public function update(Request $request, $id)
     {
         try {
@@ -71,7 +71,7 @@ class RoleController extends Controller
         }
     }
 
-    // Supprimer un rôle
+    // delete role (coming soon)
     public function destroy($id)
     {
         try {
