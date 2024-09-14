@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Http\Helpers\ApiResponse;
+
 
 class UserController extends Controller
 {
@@ -15,20 +18,15 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function register(Request $request)
+    public function store(Request $request)
     {
         try {
             $user = $this->userService->registerUser($request->all());
-
-            return response()->json([
-                'message' => 'Utilisateur créé avec succès',
-                'user' => $user,
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Erreur lors de la création de l\'utilisateur',
-                'error' => $e->getMessage(),
-            ], 400);
+            $message = ApiResponse::CREATED;
+            return ApiResponse::return_success_response($message, $user, 200);
+        } catch (\Throwable $e) {
+            Log::error('Error occured when user tried to login. ' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
         }
     }
 
@@ -42,7 +40,8 @@ class UserController extends Controller
         $user = $this->userService->getUserById($id);
 
         if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['message' => 'User not found'], 404);
+            
         }
 
         return response()->json($user);
@@ -53,15 +52,12 @@ class UserController extends Controller
         try {
             $user = $this->userService->updateUser($request->all(), $id);
 
-            return response()->json([
-                'message' => 'Utilisateur mis à jour avec succès',
-                'user' => $user,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Erreur lors de la mise à jour de l\'utilisateur',
-                'error' => $e->getMessage(),
-            ], 400);
+            $message = ApiResponse::ACCEPTED;
+            return ApiResponse::return_success_response($message, $user, 200);
+        } 
+        catch (\Throwable $e) {
+            Log::error('Error occured when update of user.' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
         }
     }
 
@@ -70,14 +66,11 @@ class UserController extends Controller
         try {
             $this->userService->deleteUser($id);
 
-            return response()->json([
-                'message' => 'Utilisateur supprimé avec succès',
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Erreur lors de la suppression de l\'utilisateur',
-                'error' => $e->getMessage(),
-            ], 400);
+            $message = ApiResponse::ACCEPTED;
+            return ApiResponse::return_success_response($message, $id, 200);
+        } catch (\Throwable $e) {
+            Log::error('Error occured when update of user.' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
         }
     }
 }

@@ -24,10 +24,7 @@ class UserService
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-
+      
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

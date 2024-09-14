@@ -46,4 +46,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasRole($role)
+    {
+        // Utiliser le même mappage de rôles que dans le middleware
+        $roles = [
+            'admin' => 1,
+            'editor' => 2,
+        ];
+
+        return $this->role_id === ($roles[$role] ?? null);
+    }
 }

@@ -24,7 +24,7 @@ class RoleService
         ]);
 
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            return null;
         }
 
         if (Role::where('label', $data['label'])->exists()) {
