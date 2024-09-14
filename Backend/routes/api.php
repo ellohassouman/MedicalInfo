@@ -24,7 +24,12 @@ Route::prefix('auth')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    
+
 });
 
 
+
+// logout
+
+Route::delete('/auth/logout', [AuthController::class, 'logout'])
+    ->middleware(['auth:sanctum']);

@@ -38,7 +38,7 @@ class ApiResponse {
 
     public static function return_server_error_response() {
 
-        $errorDetail='Error occured when performing request.';
+        $errorDetail='Une erreur est survenue. Veuillez réessayer';
         return response()->json([
             'state' => 'error',
             'data' => null,
