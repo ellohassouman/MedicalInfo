@@ -13,10 +13,82 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="API Documentation",
+ *     description="API Documentation for Authentification",
+ *     @OA\Contact(name = "Hugo", email = "l5wJt@example.com")
+ *)
+ */
 class AuthController extends Controller
 {
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/auth/login",
+     *     summary="Login user and return JWT token",
+     *     tags={"Authentication"},
+     *     description="Authentifie l'utilisateur en utilisant l'email et le mot de passe, et retourne un token JWT si l'authentification réussit.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         description="Email et mot de passe nécessaires pour la connexion",
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Connexion réussie",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="REQUEST ACCEPTED"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="accessToken", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Mot de passe incorrect ou utilisateur non trouvé",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Aucun utilisateur trouvé"),
+     *             @OA\Property(property="code", type="string", example="INVALIDE CREDENTIALS"),
+     *             @OA\Property(property="status", type="integer", example=401)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Utilisateur non trouvé",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Aucun utilisateur trouvé"),
+     *             @OA\Property(property="code", type="string", example="INVALIDE CREDENTIALS"),
+     *             @OA\Property(property="status", type="integer", example=404)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation échouée",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Veuillez remplir tous les champs."),
+     *             @OA\Property(property="code", type="string", example="INVALIDE CREDENTIALS"),
+     *             @OA\Property(property="status", type="integer", example=422)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erreur serveur",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Erreur interne du serveur"),
+     *             @OA\Property(property="code", type="string", example="INTERNAL ERROR"),
+     *             @OA\Property(property="status", type="integer", example=500)
+     *         )
+     *     )
+     * )
+     */
     public function login(Request $request)
     {
         //
@@ -110,6 +182,34 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * @OA\Delete(
+     *     path="/api/logout",
+     *     tags={"Logout"},
+     *     summary="Logout",
+     *     description="Deconnecter l'utilisateur",
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="OK"),
+     *             @OA\Property(property="code", type="string", example="OK"),
+     *             @OA\Property(property="status", type="integer", example=200)
+     *             )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Erreur interne du serveur"),
+     *             @OA\Property(property="code", type="string", example="INTERNAL ERROR"),
+     *             @OA\Property(property="status", type="integer", example=500)
+     *           )
+     *    )
+     *    )
+    */
     public function logout(Request $request){
         try {
             // Récupérer l'utilisateur actuellement authentifié
