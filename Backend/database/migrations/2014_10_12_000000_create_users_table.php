@@ -25,6 +25,7 @@ return new class extends Migration
 
             $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 

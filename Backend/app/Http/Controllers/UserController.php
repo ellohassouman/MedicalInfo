@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\ApiResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 class UserController extends Controller
@@ -32,7 +33,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return response()->json($this->userService->getAllUsers());
+        return response()->json(data: $this->userService->getAllUsers());
     }
 
     public function show($id)
@@ -61,18 +62,42 @@ class UserController extends Controller
         }
     }
 
-    public function destroy($id)
-    {
-        try {
-            $this->userService->deleteUser($id);
+    // public function destroy($id)
+    // {
+    //     try {
+    //         $response = $this->userService->deleteUser($id);
+    //         return $response;
+    //     } catch (ModelNotFoundException $e) {
+    //         return ApiResponse::return_error_response('User not found', [], 404);
+    //     } catch (\Throwable $e) {
+    //         Log::error('Error occurred when trying to delete user: ' . $e->getMessage());
+    //         return ApiResponse::return_server_error_response();
+    //     }
+    // }
 
-            $message = ApiResponse::ACCEPTED;
-            return ApiResponse::return_success_response($message, $id, 200);
-        } catch (\Throwable $e) {
-            Log::error('Error occured when update of user.' . $e->getMessage());
-            return ApiResponse::return_server_error_response();
-        }
-    }
+    // public function restore($id)
+    // {
+    //     try {
+    //         $response = $this->userService->restoreUser($id);
+    //         return $response;
+    //     } catch (ModelNotFoundException $e) {
+    //         return ApiResponse::return_error_response('User not found', [], 404);
+    //     } catch (\Throwable $e) {
+    //         Log::error('Error occurred when trying to restore user: ' . $e->getMessage());
+    //         return ApiResponse::return_server_error_response();
+    //     }
+    // }
+
+    // public function indexBySoftDelete()
+    // {
+    //     try {
+    //         $users = $this->userService->getAllUsersWithTrashed();
+    //         return ApiResponse::return_success_response('Users retrieved successfully', $users, 200);
+    //     } catch (\Throwable $e) {
+    //         Log::error('Error occurred when trying to fetch users: ' . $e->getMessage());
+    //         return ApiResponse::return_server_error_response();
+    //     }
+    // }
 }
 
 ?>

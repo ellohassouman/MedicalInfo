@@ -42,13 +42,16 @@ class RoleController extends Controller
     // role by Id
     public function show($id)
     {
+        try {
         $role = $this->roleService->getRoleById($id);
-
-        if (!$role) {
-            return response()->json(['message' => 'Role not found'], 404);
+        $message = ApiResponse::OK;
+        return response()->json($role);
+        }
+        catch(\Exception $e) {
+            Log::error(message: 'An error occurred while showing the role . ' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
         }
 
-        return response()->json($role);
     }
 
     // update role
@@ -73,7 +76,7 @@ class RoleController extends Controller
             $this->roleService->deleteRole($id);
 
             $message = ApiResponse::ACCEPTED;
-            return ApiResponse::return_success_response($message, $id, 200);
+            return ApiResponse::return_success_response($message, null, 200);
             
         } catch (\Exception $e) {
             Log::error(message: 'An error occurred while deleting the user . ' . $e->getMessage());

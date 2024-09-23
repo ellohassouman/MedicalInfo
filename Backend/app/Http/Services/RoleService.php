@@ -24,7 +24,7 @@ class RoleService
         ]);
 
         if ($validator->fails()) {
-            return null;
+            return 'Role non créé';
         }
 
         if (Role::where('label', $data['label'])->exists()) {
@@ -58,7 +58,7 @@ class RoleService
         ]);
 
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            return 'Role non sélectionné';
         }
 
         $role->label = $data['label'];
@@ -68,7 +68,7 @@ class RoleService
     }
 
 
-
+    // a revoir
     public function deleteRole(int $id): bool
     {
         $role = Role::find($id);

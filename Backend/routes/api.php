@@ -22,36 +22,22 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-
 Route::prefix('auth')->group(function () {
+    Route::post('/login', action: [AuthController::class, 'login']);
+    Route::post('/register', action: [AuthController::class, 'register']);
+    Route::get('/users', action: [AuthController::class, 'indexBySoftDelete']);
+    Route::delete(uri: '/users/{id}', action: [AuthController::class, 'destroy']);
+    Route::delete(uri: '/users/rest/{id}', action: [AuthController::class, 'restore']);
 
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
-    
+
 });
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::middleware('role:admin')->group(function () {
-
-
-
-/*User*/
-
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-});
-});
 
 /*Role*/
-Route::get('/roles', [RoleController::class, 'index']);
-Route::post('/roles', [RoleController::class, 'store']);
-Route::get('/roles/{id}', [RoleController::class, 'show']);
-Route::put('/roles/{id}', [RoleController::class, 'update']);
-Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
-
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/roles', [RoleController::class, 'index']);
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::get('/roles/{id}', [RoleController::class, 'show']);
+    Route::put('/roles/{id}', [RoleController::class, 'update']);
+    Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+});

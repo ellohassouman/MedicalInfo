@@ -27,8 +27,8 @@ class UserService
       
         return User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'email' => strtolower($data['email']),
+            'password' => Hash::make(value: $data['password']),
             'date_of_birth' => $data['date_of_birth'],
             'gender' => $data['gender'],
             'phone_number' => $data['phone_number'],
@@ -57,7 +57,7 @@ class UserService
         ]);
 
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+           return 'Utilisateur non sélectionné';
         }
 
         $user->update([
@@ -74,15 +74,53 @@ class UserService
         return $user;
     }
 
-    public function deleteUser($id): bool
+    // a ne pas considérer
+    public function deleteUser($id)
     {
-        $user = User::find($id);
+        
+            $users = User::withTrashed()->find($id);
+            if(!$users) {
+                return 'Utilisateur non trouvé';
+            }
+
+            if($users->trashed()) {
+                //return response()->json[('message' => 'ee')];
+                return response()->json(['message' => 'User is already soft deleted'], 200);
+            }
+
+            $users->delete();
+
+          
+        
+    }
+
+
+    public function restoreUser($id)
+    {
+        // Récupérer l'utilisateur supprimé
+        $user = User::withTrashed()->find($id);
+
         if (!$user) {
-            throw new \Exception('Utilisateur non trouvé');
+            return 'Utilisateur non trouvé';
         }
 
-        return $user->delete();
+        // Vérifier si l'utilisateur est soft deleted avant de restaurer
+        if ($user->trashed()) {
+            $user->restore();
+            return response()->json(['message' => 'User has been restored'], 200);
+        }
+
+        return response()->json(['message' => 'User is not deleted'], 200);
     }
+
+
+    public function getAllUsersWithTrashed()
+    {
+        return User::withTrashed()->get();
+    }
+
+
+
 
     public function getUserById($id): ?User
     {
