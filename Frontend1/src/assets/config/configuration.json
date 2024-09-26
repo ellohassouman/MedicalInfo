@@ -1,0 +1,5 @@
+{
+  "RouteBaseApi": "http://127.0.0.1:8000/api",
+  "RouteApiLocal": "http://127.0.0.1:8000/api",
+  "RouteApiOnline": "http://127.0.0.1:8000/api"
+}

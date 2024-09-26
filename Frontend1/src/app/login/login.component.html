@@ -1,0 +1,55 @@
+
+  <body class="login-bg">
+
+    <!-- Container starts -->
+    <div class="container">
+
+      <!-- Auth wrapper starts -->
+      <div class="auth-wrapper">
+
+        <!-- Form starts -->
+        <form [formGroup]="UserFormGroup">
+
+          <div class="auth-box">
+            <a href="index.html" class="auth-logo mb-4">
+              <img src="assets/images/logo-dark.svg" alt="Bootstrap Gallery">
+            </a>
+
+            <h4 class="mb-4">Login</h4>
+
+            <div class="mb-3">
+              <label class="form-label" for="email">Your email <span class="text-danger">*</span></label>
+              <input type="text" id="email" formControlName="email" class="form-control" placeholder="Enter your email">
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label" for="pwd">Your password <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="password" id="pwd" class="form-control" placeholder="Enter password" formControlName="password">
+                <button class="btn btn-outline-secondary" type="button">
+                  <i class="ri-eye-line text-primary"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end mb-3">
+              <a href="forgot-password.html" class="text-decoration-underline">Forgot password?</a>
+            </div>
+
+            <div class="mb-3 d-grid gap-2">
+              <button (click)="Login()" class="btn btn-primary">Login</button>
+              <a href="signup.html" class="btn btn-secondary">Not registered? Signup</a>
+            </div>
+
+          </div>
+
+        </form>
+        <!-- Form ends -->
+
+      </div>
+      <!-- Auth wrapper ends -->
+
+    </div>
+    <!-- Container ends -->
+
+  </body>
