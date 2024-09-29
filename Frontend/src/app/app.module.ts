@@ -15,6 +15,10 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { SidebarComponent } from './Layouts/sidebar/sidebar.component';
+import { HeaderComponent } from './Layouts/header/header.component';
+import { FooterComponent } from './Layouts/footer/footer.component';
+import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
 
 
 
@@ -44,7 +48,11 @@ export function initServicesFactory(
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    SidebarComponent,
+    HeaderComponent,
+    FooterComponent,
+    MainHeaderComponent
   ],
   imports: [
     BrowserModule,

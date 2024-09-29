@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequesterService } from '../Services/requester.service';
 import { EnumEndpoints } from '../Enum/enum-endpoints';
 import { Router } from '@angular/router';
+import { SecurityService } from '../Services/security.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent {
 
   constructor(
     private FormBuilder : FormBuilder,
-    private RequesterService : RequesterService,
+    private SecurityService : SecurityService,
+    // private RequesterService : RequesterService,
     private Router : Router
   ) {}
 
@@ -38,11 +40,13 @@ export class LoginComponent {
 
   }
 
-  async Login()
+  Login()
   {
-    var ReturnedResponse =await this.RequesterService.AsyncPostResponse(EnumEndpoints.Authentication,this.UserFormGroup.value,false,true,false)
-    ReturnedResponse[0]== 1 ? this.Router.navigateByUrl('DashboardMedecin') : null
-    console.log('ISOK',ReturnedResponse[0])
+
+    this.SecurityService.Login(this.UserFormGroup.value)
+    // var ReturnedResponse =await this.RequesterService.AsyncPostResponse(EnumEndpoints.Authentication,this.UserFormGroup.value,false,true,false)
+    // ReturnedResponse[0]== 1 ? this.Router.navigateByUrl('DashboardMedecin') : null
+    // console.log('ISOK',ReturnedResponse[0])
   }
 
 }

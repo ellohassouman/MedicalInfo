@@ -1,1 +1,65 @@
-<router-outlet></router-outlet>
+
+    <!-- Loading starts -->
+    <!-- <div id="loading-wrapper">
+      <div class='spin-wrapper'>
+        <div class='spin'>
+          <div class='inner'></div>
+        </div>
+        <div class='spin'>
+          <div class='inner'></div>
+        </div>
+        <div class='spin'>
+          <div class='inner'></div>
+        </div>
+        <div class='spin'>
+          <div class='inner'></div>
+        </div>
+        <div class='spin'>
+          <div class='inner'></div>
+        </div>
+        <div class='spin'>
+          <div class='inner'></div>
+        </div>
+      </div>
+    </div> -->
+    <!-- Loading ends -->
+
+    <router-outlet *ngIf="!SecurityService.CheckAuth()"></router-outlet>
+
+
+    <!-- Page wrapper starts -->
+    <div class="page-wrapper" *ngIf="SecurityService.CheckAuth()">
+
+      <!-- App header starts -->
+      <!-- App header ends -->
+      <app-main-header></app-main-header>
+
+      <!-- Main container starts -->
+      <div class="main-container">
+
+
+        <app-sidebar></app-sidebar>
+
+        <!-- App container starts -->
+        <div class="app-container">
+
+          <!-- App hero header starts -->
+          <app-header></app-header>
+          <!-- App Hero header ends -->
+
+          <!-- App body starts -->
+          <router-outlet></router-outlet>
+          <!-- App body ends -->
+
+          <!-- App footer starts -->
+          <app-footer></app-footer>
+          <!-- App footer ends -->
+
+        </div>
+        <!-- App container ends -->
+
+      </div>
+      <!-- Main container ends -->
+
+    </div>
+    <!-- Page wrapper ends -->
