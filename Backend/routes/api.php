@@ -29,7 +29,6 @@ Route::prefix('auth')->group(function () {
     Route::delete(uri: '/users/{id}', action: [AuthController::class, 'destroy']);
     Route::delete(uri: '/users/rest/{id}', action: [AuthController::class, 'restore']);
 
-
 });
 
 
@@ -41,3 +40,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/roles/{id}', [RoleController::class, 'update']);
     Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
 });
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+
+
+
+
+
+// logout
+
+Route::delete('/auth/logout', [AuthController::class, 'logout'])
+    ->middleware(['auth:sanctum']);

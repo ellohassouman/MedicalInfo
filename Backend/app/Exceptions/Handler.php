@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Http\Helpers\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -44,5 +46,26 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+
+    /**
+     * Handle unauthenticated users.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        $errorsDetails = "Veuillez vous authentifier";
+        // Vérifier si la requête s'attend à une réponse JSON
+        if ($request->expectsJson()) {
+
+            return ApiResponse::return_error_response(ApiResponse::UNAUTHORIZED, $errorsDetails, 401);
+        }
+
+        // Vous pouvez ajuster la redirection ou gérer d'autres formats ici
+        return ApiResponse::return_error_response(ApiResponse::UNAUTHORIZED, $errorsDetails, 401);
     }
 }
