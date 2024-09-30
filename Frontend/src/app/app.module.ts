@@ -19,6 +19,8 @@ import { SidebarComponent } from './Layouts/sidebar/sidebar.component';
 import { HeaderComponent } from './Layouts/header/header.component';
 import { FooterComponent } from './Layouts/footer/footer.component';
 import { MainHeaderComponent } from './Layouts/main-header/main-header.component';
+import { PatientCreateComponent } from './patient/patient-create/patient-create.component';
+import { PatientListComponent } from './patient/patient-list/patient-list.component';
 
 
 
@@ -52,7 +54,9 @@ export function initServicesFactory(
     SidebarComponent,
     HeaderComponent,
     FooterComponent,
-    MainHeaderComponent
+    MainHeaderComponent,
+    PatientCreateComponent,
+    PatientListComponent
   ],
   imports: [
     BrowserModule,
