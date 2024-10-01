@@ -224,7 +224,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "User successfully registered",
+                        "description": "Utilisateur enregistré",
                         "content": {
                             "application/json": {
                                 "schema": {
