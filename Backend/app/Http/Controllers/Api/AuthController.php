@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Constants\GlobalConst;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+
+use App\Http\Services\UserService;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
 
 /**
@@ -23,6 +27,19 @@ use Throwable;
  */
 class AuthController extends Controller
 {
+
+    public $successResponse;
+    public $errorResponse;
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->successResponse = null;
+        $this->errorResponse = null;
+        $this->userService = $userService;
+
+    }
+
 
     /**
      * @OA\Post(
@@ -175,10 +192,91 @@ class AuthController extends Controller
 
     }
 
+       /**
+ * @OA\Post(
+ *     path="/api/auth/register",
+ *     summary="Ajouter un nouveau utilisateur",
+ *     tags={"User"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="name", type="string", example="Xavi"),
+ *             @OA\Property(property="email", type="string", example="xavi@gmail.com"),
+ *             @OA\Property(property="password", type="string", example="Barça12345"),
+ *             @OA\Property(property="date_of_birth", type="string", format="date", example="1987-07-25"),
+ *             @OA\Property(property="gender", type="string", example="M"),
+ *             @OA\Property(property="phone_number", type="string", example="0102030405"),
+ *             @OA\Property(property="address", type="string", example="Barcelone"),
+ *             @OA\Property(property="role_id", type="integer", example=1)
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Utilisateur enregistré",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(property="message", type="string", example="Utilisateur enregistré"),
+ *             @OA\Property(property="data", type="object")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Server error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Erreur interne du serveur"),
+ *             @OA\Property(property="code", type="string", example="INTERNAL ERROR"),
+ *             @OA\Property(property="status", type="integer", example=500)
+ *         )
+ *     )
+ * )
+ */
 
     public function register(Request $request)
     {
         //
+        try {
+            $user = $this->userService->registerUser($request->all());
+            $message = ApiResponse::CREATED;
+            return ApiResponse::return_success_response($message, $user, 200);
+        } catch (\Throwable $e) {
+            Log::error('Error occurred when user tried to register. ' . $e->getMessage());
+            return ApiResponse::return_server_error_response();
+        }
+    }
+
+
+
+    /**
+ * @OA\Get(
+ *     path="/api/auth/users",
+ *     summary="Liste des users",
+ *     tags={"User"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Liste des users",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(property="data", type="array",
+ *                 @OA\Items(
+ *                     @OA\Property(property="id", type="integer", example=1),
+ *                     @OA\Property(property="name", type="string", example="John Doe"),
+ *                     @OA\Property(property="email", type="string", example="john.doe@example.com"),
+ *                     @OA\Property(property="created_at", type="string", example="2024-09-30 12:34:56"),
+ *                     @OA\Property(property="updated_at", type="string", example="2024-09-30 12:34:56")
+ *                 )
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Server error"
+ *     )
+ * )
+ */
+
+    public function show () {
+        return response()->json(data: $this->userService->getAllUsers());
     }
 
 
