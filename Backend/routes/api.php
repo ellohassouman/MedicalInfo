@@ -1,5 +1,8 @@
 <?php
 
+
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,13 +23,24 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::prefix('auth')->group(function () {
 
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
+Route::prefix('auth')->group(function () {
+    Route::post('/login', action: [AuthController::class, 'login']);
+    Route::post('/register', action: [AuthController::class, 'register']);
+    Route::get('/users', action: [AuthController::class, 'show']);
 
 });
 
+
+/*Role*/
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/roles', [RoleController::class, 'index']);
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::get('/roles/{id}', [RoleController::class, 'show']);
+    Route::put('/roles/{id}', [RoleController::class, 'update']);
+    Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+});
+ 
 
 
 // logout
