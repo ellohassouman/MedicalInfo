@@ -275,9 +275,6 @@ class AuthController extends Controller
  * )
  */
 
-    public function show () {
-        return response()->json(data: $this->userService->getAllUsers());
-    }
 
 
     /**
