@@ -30,7 +30,7 @@ export class SecurityService {
     CheckAuth()
     {
       var IsAuth=false
-      if(localStorage.getItem('CurrentUser')!=null)
+      if(localStorage.getItem('CurrentUser')!=undefined)
       {
         var User : UserModel  = JSON.parse(localStorage.getItem('CurrentUser')!)
         IsAuth=this.SessionManger(User)
@@ -99,6 +99,12 @@ export class SecurityService {
     }
 
     // console.log('ISOK',ReturnedResponse[0])
+  }
+
+  Logout()
+  {
+    localStorage.removeItem('CurrentUser')
+    this.Router.navigateByUrl('')
   }
 
 

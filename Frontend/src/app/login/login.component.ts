@@ -26,6 +26,8 @@ export class LoginComponent {
     //Add 'implements OnInit' to the class.
     this.InitFormGroup();
 
+    this.SecurityService.CheckAuth() ? this.Router.navigateByUrl('DashboardMedecin') : null
+
   }
 
 

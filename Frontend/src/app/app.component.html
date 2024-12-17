@@ -24,11 +24,11 @@
     </div> -->
     <!-- Loading ends -->
 
-    <router-outlet *ngIf="!SecurityService.CheckAuth()"></router-outlet>
+    <router-outlet *ngIf="SecurityService.CheckAuth()==false"></router-outlet>
 
 
     <!-- Page wrapper starts -->
-    <div class="page-wrapper" *ngIf="SecurityService.CheckAuth()">
+    <div class="page-wrapper" *ngIf="SecurityService.CheckAuth()==true">
 
       <!-- App header starts -->
       <!-- App header ends -->

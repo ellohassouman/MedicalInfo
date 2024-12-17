@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { SecurityService } from 'src/app/Services/security.service';
 
 @Component({
   selector: 'app-main-header',
@@ -6,5 +8,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./main-header.component.css']
 })
 export class MainHeaderComponent {
+
+
+  constructor(
+    private SecurityService : SecurityService,
+    // private RequesterService : RequesterService,
+    private Router : Router
+  ) {}
+
+  Logout()
+  {
+    this.SecurityService.Logout()
+  }
 
 }
